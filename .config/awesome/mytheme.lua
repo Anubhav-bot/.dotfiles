@@ -13,13 +13,15 @@ local theme = {}
 
 theme.font          = "FiraCode Nerd Font Mono 10"
 
-theme.bg_normal     = "#222222"
-theme.bg_focus      = "#535d6c"
+-- theme.bg_focus      = "#535d6c"
+-- theme.bg_normal     = "#222222"
+theme.bg_focus      = "#003d5b"
+theme.bg_normal     = "#101d1d"
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
+theme.rg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
@@ -27,8 +29,8 @@ theme.fg_minimize   = "#ffffff"
 theme.useless_gap   = dpi(7)
 theme.border_width  = dpi(1)
 theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
-theme.border_marked = "#91231c"
+theme.border_focus  = "#91231c"
+theme.border_marked = "#91995c"
 
 -- There are other variable sets
 -- overriding the default one when
@@ -97,7 +99,14 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = themes_path.."default/background.png"
+local f = io.popen("sh -c \"find ~/Wallpapers -iname '*.png' -o -iname '*.jpg' | shuf -n 1 | xargs echo -n\"")
+
+if f == nil then
+    theme.wallpaper = themes_path.."default/background.png"
+else
+    theme.wallpaper = f:read("*all")
+end
+io.close(f)
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
