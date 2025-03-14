@@ -6,7 +6,6 @@ local hotkeys_popup = require('awful.hotkeys_popup').widget
 local modkey = require('configuration.keys.mod').modKey
 local altkey = require('configuration.keys.mod').altKey
 local apps = require('configuration.apps')
-require('layout')
 
 function poweroff_command()
     awful.spawn.with_shell('poweroff')

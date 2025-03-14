@@ -5,7 +5,7 @@ local client_buttons = require('configuration.client.buttons')
 
 -- Rules
 awful.rules.rules = {
-    {rule_any = {name = {'Termite'}}, properties = {skip_decoration = true}},
+    {rule_any = {name = {'xterm'}, class = {'xterm'}}, properties = {skip_decoration = true}},
     -- All clients will match this rule.
     {
         rule = {},
@@ -43,5 +43,5 @@ awful.rules.rules = {
             end,
             skip_decoration = true
         }
-    }
+    },
 }

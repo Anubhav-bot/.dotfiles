@@ -30,22 +30,21 @@ awful.screen.connect_for_each_screen(function(s)
     end
 end)
 
--- Hide bars
+local bars_visible = true
+
+-- Toggle bars
 function toggleBarsVisibility()
+    bars_visible = not bars_visible
     for s in screen do
-        if s.selected_tag then
-            local fullscreen = s.selected_tag.fullscreenMode
-            -- Order matter here for shadow
-            s.workspace_panel.visible = not s.workspace_panel.visible
-            s.mode_panel.visible = not s.mode_panel.visible
-            s.tasklist_panel.visible = not s.tasklist_panel.visible
-            s.date_panel.visible = not s.date_panel.visible
-            s.clock_panel.visible = not s.clock_panel.visible
-            s.systemtray_panel.visible = not s.systemtray_panel.visible
-            s.volume_panel.visible = not s.volume_panel.visible
-            if s.left_panel then
-                s.left_panel.visible = not s.left_panel.visible
-            end
+        s.workspace_panel.visible = bars_visible
+        s.mode_panel.visible = bars_visible
+        s.tasklist_panel.visible = bars_visible
+        s.date_panel.visible = bars_visible
+        s.clock_panel.visible = bars_visible
+        s.systemtray_panel.visible = bars_visible
+        s.volume_panel.visible = bars_visible
+        if s.left_panel then
+            s.left_panel.visible = bars_visible
         end
     end
 end
@@ -55,16 +54,17 @@ function updateBarsVisibility()
     for s in screen do
         if s.selected_tag then
             local fullscreen = s.selected_tag.fullscreenMode
-            -- Order matter here for shadow
-            s.workspace_panel.visible = not fullscreen
-            s.mode_panel.visible = not fullscreen
-            s.tasklist_panel.visible = not fullscreen
-            s.date_panel.visible = not fullscreen
-            s.clock_panel.visible = not fullscreen
-            s.systemtray_panel.visible = not fullscreen
-            s.volume_panel.visible = not fullscreen
+            local visibility = not fullscreen and bars_visible
+
+            s.workspace_panel.visible = visibility
+            s.mode_panel.visible = visibility
+            s.tasklist_panel.visible = visibility
+            s.date_panel.visible = visibility
+            s.clock_panel.visible = visibility
+            s.systemtray_panel.visible = visibility
+            s.volume_panel.visible = visibility
             if s.left_panel then
-                s.left_panel.visible = not fullscreen
+                s.left_panel.visible = visibility
             end
         end
     end
