@@ -1,25 +1,36 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
 end
-alias tmux-mul="~/Documents/tmux-startups/tmux-mul.sh"
-alias tmux-dycn-front="~/Documents/tmux-startups/tmux-dycn-front.sh"
-alias tmux-dycn-back="~/Documents/tmux-startups/tmux-dycn-back.sh"
-alias tmux-mis="~/Documents/tmux-startups/tmux-mis.sh"
+# alias tmux-mul="~/Documents/tmux-startups/tmux-mul.sh"
+# alias tmux-dycn-front="~/Documents/tmux-startups/tmux-dycn-front.sh"
+# alias tmux-dycn-back="~/Documents/tmux-startups/tmux-dycn-back.sh"
+# alias tmux-mis="~/Documents/tmux-startups/tmux-mis.sh"
 
 alias gss="git status -s"
-alias xampp="sudo systemctl start mysqld httpd"
+# alias imv="/usr/libexec/imv/imv"
+alias yt="yt-x"
+# alias xampp="sudo systemctl start mysqld httpd"
 
 starship init fish | source
 zoxide init --cmd cd fish | source
-export GPG_TTY=$(tty)
+export EDITOR="nvim"
 
-# yazi stuff
-function y
-	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-	yazi $argv --cwd-file="$tmp"
-	if set cwd (command cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-		builtin cd -- "$cwd"
-	end
-	rm -f -- "$tmp"
+# night light
+function nl
+    # Define your predefined color temperature ranges and the 'Off' option
+    set colors "Off\n1500K\n2000K\n3000K\n4000K\n5000K\n6000K"
+
+    # Use fzf to display the options and capture the selected value
+    set selected_color (echo -e $colors | fzf --prompt="Select Night Light Temperature: ")
+
+    # If a color was selected, apply it with redshift
+    if test -n "$selected_color"
+        if test "$selected_color" = "Off"
+            redshift -x  # Turn off redshift
+        else
+            redshift -O $selected_color  # Apply the selected temperature
+        end
+    else
+        echo "No selection made."
+    end
 end
-# end yazi stuff
