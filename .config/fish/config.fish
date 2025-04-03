@@ -7,8 +7,10 @@ end
 # alias tmux-mis="~/Documents/tmux-startups/tmux-mis.sh"
 
 alias gss="git status -s"
-# alias imv="/usr/libexec/imv/imv"
 alias yt="yt-x"
+alias fa="fastanime anilist"
+alias pa="mpv (find $HOME/Videos -name '*.mp3' | fzf)"
+alias pa="mpv (find $HOME/Videos -name '*.mp4' | fzf)"
 # alias xampp="sudo systemctl start mysqld httpd"
 
 starship init fish | source
@@ -34,3 +36,6 @@ function nl
         echo "No selection made."
     end
 end
+
+# uv
+fish_add_path "/home/timothy/.local/bin"
