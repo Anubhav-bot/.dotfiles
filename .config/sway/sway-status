@@ -8,10 +8,10 @@ cpu=$(sensors | grep "Package" | awk '{print $4}' | xargs)
 battery=$(acpi | awk '{if ($3 == "Not") print $5 $3 $4; else print $4 $3}' | tr -d ',' | sed 's/Discharging/ (D)/;s/Charging/ (C)/;s/Notcharging/ (?)/;')
 
 # Alsa master volume
-volume=$(pactl get-sink-volume 0 | awk '{print $5}' | xargs)
+# volume=$(pactl get-sink-volume 0 | awk '{print $5}' | xargs)
 
 # Date
-date=$(date "+%a %F %R")
+datetime=$(date "+%b %d (%a) | %I:%M %p")
 
 # Status bar
-echo "Vol: ${volume} | Bat: ${battery} | Temp: ${cpu} | ${date}"
+echo "Bat: ${battery} | Temp: ${cpu} | ${datetime}"
