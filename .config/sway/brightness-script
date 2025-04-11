@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <option>"
+    exit 1
+fi
+
+duration=1000 #time in ms
+show_brightness() {
+    brightness=$( brightnessctl | awk '/%/ {print $4}' | tr -d '()')
+    notify-send -t $duration -h string:x-canonical-private-synchronous:brightness "Brightness: " $brightness
+}
+
+case "$1" in
+    inc)
+        brightnessctl set 5%+
+        show_brightness
+        ;;
+    dec)
+        brightnessctl set 5%-
+        show_brightness
+        ;;
+    *)
+        echo "Invalid argument passed"
+        exit 1
+        ;;
+esac
