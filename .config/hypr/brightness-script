@@ -5,16 +5,6 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-CURRENT_BRIGHTNESS_VALUE=$( brightnessctl | awk '/%/ {print $4}' | tr -d '()%')
-echo $CURRENT_BRIGHTNESS_VALUE
-if [[ $CURRENT_BRIGHTNESS_VALUE -lt 10 ]]; then
-    change_factor=1
-else
-    change_factor=5
-fi
-
-echo $change_factor
-
 duration=1000 #time in ms
 show_brightness() {
     brightness=$( brightnessctl | awk '/%/ {print $4}' | tr -d '()')
@@ -23,11 +13,11 @@ show_brightness() {
 
 case "$1" in
     inc)
-        brightnessctl set $change_factor%+
+        brightnessctl set 5%+
         show_brightness
         ;;
     dec)
-        brightnessctl set $change_factor%-
+        brightnessctl set 5%-
         show_brightness
         ;;
     *)

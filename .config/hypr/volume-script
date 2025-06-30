@@ -1,0 +1,33 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <option>"
+    exit 1
+fi
+
+duration=1000 #time in ms
+show_volume() {
+    volume=$(pactl get-sink-volume \@DEFAULT_SINK@ | awk '{print $5}' | xargs)
+    notify-send -t $duration -h string:x-canonical-private-synchronous:vol "Volume" $volume
+}
+
+case "$1" in
+    inc)
+        pactl set-sink-volume \@DEFAULT_SINK@ +5%
+        show_volume
+        ;;
+    dec)
+        pactl set-sink-volume \@DEFAULT_SINK@ -5%
+        show_volume
+        ;;
+    toggle_mute)
+        pactl set-sink-mute \@DEFAULT_SINK@ toggle
+        ;;
+    *)
+        echo "Invalid argument passed"
+        exit 1
+        ;;
+esac
+
+
+

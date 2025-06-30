@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# File to store the current player index
+INDEX_FILE="$HOME/tmp/playerctl-index"
+PLAYER_FILE="$HOME/tmp/player"
+
+# Check for direction argument
+if [ "$1" != "forward" ] && [ "$1" != "backward" ]; then
+    notify-send "Invalid argument: use 'forward' or 'backward'" -t 3000
+    exit 1
+fi
+
+# Get list of active players
+PLAYERS=$(playerctl --list-all)
+
+# Check if there are any players
+if [ -z "$PLAYERS" ]; then
+    notify-send "No media players found" -t 3000
+    exit 1
+fi
+
+# Convert players to an array
+readarray -t PLAYER_ARRAY <<< "$PLAYERS"
+
+# Get total number of players
+NUM_PLAYERS=${#PLAYER_ARRAY[@]}
+
+# Read current index or default to 0
+if [ -f "$INDEX_FILE" ]; then
+    CURRENT_INDEX=$(cat "$INDEX_FILE")
+else
+    CURRENT_INDEX=0
+fi
+
+# Calculate next player index based on direction
+if [ "$1" = "forward" ]; then
+    NEXT_INDEX=$(( (CURRENT_INDEX + 1) % NUM_PLAYERS ))
+elif [ "$1" = "backward" ]; then
+    NEXT_INDEX=$(( (CURRENT_INDEX - 1 + NUM_PLAYERS) % NUM_PLAYERS ))
+fi
+
+# Get the next player name
+NEXT_PLAYER=${PLAYER_ARRAY[$NEXT_INDEX]}
+
+# Set the next player as active (doesn't work)
+playerctl --player="$NEXT_PLAYER" status >/dev/null 2>&1
+
+# Get the player's status
+STATUS=$(playerctl --player="$NEXT_PLAYER" status 2>/dev/null)
+
+#Save the player name for playerctl
+echo "$NEXT_PLAYER" > "$PLAYER_FILE"
+
+# Send notification with player name and status
+notify-send "Switched to $NEXT_PLAYER ($STATUS)" -t 1000 -i multimedia-player -h string:x-canonical-private-synchronous:media-submap
+
+# Save the new index
+echo "$NEXT_INDEX" > "$INDEX_FILE"
